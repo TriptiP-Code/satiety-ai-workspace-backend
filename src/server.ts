@@ -1,13 +1,14 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 
-dotenv.config();
+import chatRoutes from "./routes/chat";
 
 const app = express();
 
 app.use(cors());
-
 app.use(express.json());
 
 app.get("/api/health", (req, res) => {
@@ -16,6 +17,8 @@ app.get("/api/health", (req, res) => {
     message: "Satiety backend is running 🚀",
   });
 });
+
+app.use("/api/chat", chatRoutes);
 
 const PORT = process.env.PORT || 5000;
 
