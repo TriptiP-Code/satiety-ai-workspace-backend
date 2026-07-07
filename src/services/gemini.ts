@@ -1,28 +1,26 @@
-export async function generateResponse(prompt: string) {
-  const apiKey = process.env.GEMINI_API_KEY;
+import type { Message } from "../types/message";
 
-  if (!apiKey) {
-    throw new Error("GEMINI_API_KEY is missing.");
-  }
+const API_KEY = process.env.GEMINI_API_KEY!;
 
-  const url =
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
-  const response = await fetch(url, {
+export async function generateResponse(messages: Message[]) {
+  const contents = messages.map((message) => ({
+    role: message.role === "assistant" ? "model" : "user",
+    parts: [
+      {
+        text: message.content,
+      },
+    ],
+  }));
+
+  const response = await fetch(URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      contents: [
-        {
-          parts: [
-            {
-              text: prompt,
-            },
-          ],
-        },
-      ],
+      contents,
     }),
   });
 
@@ -35,5 +33,5 @@ export async function generateResponse(prompt: string) {
     throw new Error(JSON.stringify(data));
   }
 
-  return data.candidates?.[0]?.content?.parts?.[0]?.text ?? "No response";
+  return data.candidates[0].content.parts[0].text;
 }

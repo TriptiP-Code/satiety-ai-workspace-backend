@@ -5,25 +5,24 @@ const router = Router();
 
 router.post("/", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { messages } = req.body;
 
-    if (!message) {
+    if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({
-        error: "Message is required",
+        error: "messages array is required",
       });
     }
 
-    const reply = await generateResponse(message);
+    const reply = await generateResponse(messages);
 
     res.json({
       reply,
     });
   } catch (error) {
-    console.error("===== GEMINI ERROR =====");
     console.error(error);
 
     res.status(500).json({
-      error: error instanceof Error ? error.message : "Unknown error",
+      error: "Failed to generate response",
     });
   }
 });
