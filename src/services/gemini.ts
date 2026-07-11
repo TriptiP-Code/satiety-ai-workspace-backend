@@ -37,8 +37,11 @@ export async function generateResponse(messages: Message[]) {
 }
 
   if (!response.ok) {
-    throw new Error(JSON.stringify(data));
-  }
+  throw {
+    status: response.status,
+    data,
+  };
+}
 
   return data.candidates[0].content.parts[0].text;
 }
