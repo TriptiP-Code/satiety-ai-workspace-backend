@@ -30,8 +30,7 @@ export async function generateResponse(messages: Message[]) {
 
   const data = await response.json();
 
-  console.log("Gemini Response:");
-  if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
   console.log("Gemini Response:");
   console.log(JSON.stringify(data, null, 2));
 }
