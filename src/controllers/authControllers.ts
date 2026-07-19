@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { registerUser } from "../services/authService";
+
+import { registerUser } from "../services/authServices";
 
 export async function register(
   req: Request,
