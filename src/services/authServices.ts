@@ -23,12 +23,12 @@ export async function registerUser(
 
   // Create profile
   const { error: profileError } = await supabase
-    .from("profiles")
-    .insert({
-      id: user.id,
-      name,
-      email,
-    });
+  .from("user_profiles")
+  .insert({
+    id: user.id,
+    name,
+    email,
+  });
 
   if (profileError) {
     throw profileError;
