@@ -15,6 +15,8 @@ import workspaceRoutes from "./routes/workspace";
 
 import conversationRoutes from "./routes/conversation"
 
+import messageRoutes from "./routes/messages";
+
 const app = express();
 
 app.use(cors());
@@ -43,6 +45,8 @@ app.use("/api/user", userRoutes);
 app.use("/api/workspaces", workspaceRoutes);
 
 app.use("/api/conversations", conversationRoutes);
+
+app.use("/api/messages", messageRoutes);
 
 const PORT = process.env.PORT || 5000;
 
