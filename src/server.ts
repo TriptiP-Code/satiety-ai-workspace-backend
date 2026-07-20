@@ -11,6 +11,8 @@ import authRoutes from "./routes/auth";
 
 import userRoutes from "./routes/user";
 
+import workspaceRoutes from "./routes/workspace";
+
 const app = express();
 
 app.use(cors());
@@ -35,6 +37,8 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/auth", authRoutes);
 
 app.use("/api/user", userRoutes);
+
+app.use("/api/workspaces", workspaceRoutes);
 
 const PORT = process.env.PORT || 5000;
 
