@@ -1,31 +1,33 @@
 import {
-  getConversationMessages,
   createMessage,
   deleteConversationMessages,
+  deleteMessage,
+  getConversationMessages,
 } from "../repositories/messageRepository";
 
 export async function getMessages(
-  conversationId: string
+  conversationId: string,
+  userId: string
 ) {
-  return getConversationMessages(conversationId);
+  return getConversationMessages(conversationId, userId);
 }
 
 export async function addMessage(
   conversationId: string,
-  role: string,
+  userId: string,
+  role: "user" | "assistant",
   content: string
 ) {
-  return createMessage(
-    conversationId,
-    role,
-    content
-  );
+  return createMessage(conversationId, userId, role, content);
+}
+
+export async function removeMessage(id: string, userId: string) {
+  return deleteMessage(id, userId);
 }
 
 export async function clearMessages(
-  conversationId: string
+  conversationId: string,
+  userId: string
 ) {
-  return deleteConversationMessages(
-    conversationId
-  );
+  return deleteConversationMessages(conversationId, userId);
 }
