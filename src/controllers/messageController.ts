@@ -11,7 +11,9 @@ export async function getAllMessages(
   res: Response
 ) {
   try {
-    const conversationId = req.params.conversationId;
+    const conversationId = Array.isArray(req.params.conversationId)
+      ? req.params.conversationId[0]
+      : req.params.conversationId;
 
     if (!conversationId) {
       return res.status(400).json({
@@ -20,8 +22,7 @@ export async function getAllMessages(
       });
     }
 
-    const messages =
-      await getMessages(conversationId);
+    const messages = await getMessages(conversationId);
 
     res.json(messages);
   } catch (error) {
@@ -67,7 +68,9 @@ export async function deleteMessages(
   res: Response
 ) {
   try {
-    const conversationId = req.params.conversationId;
+    const conversationId = Array.isArray(req.params.conversationId)
+      ? req.params.conversationId[0]
+      : req.params.conversationId;
 
     if (!conversationId) {
       return res.status(400).json({
@@ -80,8 +83,7 @@ export async function deleteMessages(
 
     res.json({
       success: true,
-      message:
-        "Messages deleted successfully",
+      message: "Messages deleted successfully",
     });
   } catch (error) {
     console.error(error);
