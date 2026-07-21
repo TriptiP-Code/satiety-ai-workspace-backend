@@ -1,5 +1,10 @@
-import { Request, Response, NextFunction } from "express";
-import { supabase } from "../config/supabase";
+import {
+  Request,
+  Response,
+  NextFunction,
+} from "express";
+
+import { supabaseAdmin } from "../config/supabase";
 
 export async function authenticate(
   req: Request,
@@ -7,43 +12,31 @@ export async function authenticate(
   next: NextFunction
 ) {
   try {
-    console.log("AUTH HEADER:", req.headers.authorization);
     const authHeader = req.headers.authorization;
 
-    if (!authHeader) {
+    if (!authHeader?.startsWith("Bearer ")) {
       return res.status(401).json({
         success: false,
-        error: "Authorization header missing",
+        error: "Authorization header missing or invalid",
       });
     }
 
-    const token = authHeader.replace(
-      "Bearer ",
-      ""
-    );
-
-    console.log("TOKEN:", token);
+    const token = authHeader.replace("Bearer ", "");
 
     const { data, error } =
-      await supabase.auth.getUser(token);
-
-        console.log("SUPABASE USER:", data.user);
-        console.log("SUPABASE ERROR:", error);
-        console.log("AUTH HEADER:", authHeader);
-        console.log("TOKEN:", token);
-        console.log("SUPABASE ERROR:", error);console.log("USER:", data.user);
+      await supabaseAdmin.auth.getUser(token);
 
     if (error || !data.user) {
-  return res.status(401).json({
-    success: false,
-    error: error?.message,
-  });
-}
+      return res.status(401).json({
+        success: false,
+        error: error?.message ?? "Invalid token",
+      });
+    }
 
     (req as any).user = data.user;
 
     next();
-  } catch (error) {
+  } catch {
     return res.status(401).json({
       success: false,
       error: "Authentication failed",

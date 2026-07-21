@@ -1,9 +1,9 @@
-import { supabase } from "../config/supabase";
+import { supabaseAdmin } from "../config/supabase";
 
 export async function getConversationMessages(
   conversationId: string
 ) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("messages")
     .select("*")
     .eq("conversation_id", conversationId)
@@ -21,7 +21,7 @@ export async function createMessage(
   role: string,
   content: string
 ) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("messages")
     .insert({
       conversation_id: conversationId,
@@ -39,7 +39,7 @@ export async function createMessage(
 export async function deleteConversationMessages(
   conversationId: string
 ) {
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from("messages")
     .delete()
     .eq("conversation_id", conversationId);

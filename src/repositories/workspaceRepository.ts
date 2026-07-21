@@ -1,7 +1,7 @@
-import { supabase } from "../config/supabase";
+import { supabaseAdmin } from "../config/supabase";
 
 export async function getUserWorkspaces(userId: string) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("workspaces")
     .select("*")
     .eq("user_id", userId)
@@ -18,7 +18,7 @@ export async function createWorkspace(
   userId: string,
   name: string
 ) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("workspaces")
     .insert({
       user_id: userId,
@@ -37,7 +37,7 @@ export async function renameWorkspace(
   id: string,
   name: string
 ) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("workspaces")
     .update({
       name,
@@ -52,7 +52,7 @@ export async function renameWorkspace(
 }
 
 export async function deleteWorkspace(id: string) {
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from("workspaces")
     .delete()
     .eq("id", id);

@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { supabase } from "../config/supabase";
+import { supabaseAdmin } from "../config/supabase";
 
 const router = Router();
 
 router.get("/", async (_, res) => {
   try {
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from("workspaces")
       .select("id")
       .limit(1);

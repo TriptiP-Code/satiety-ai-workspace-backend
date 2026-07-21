@@ -1,19 +1,23 @@
-import { supabase } from "../config/supabase";
+import {
+  supabaseAdmin,
+  supabaseAuth,
+} from "../config/supabase";
 
 export async function registerUser(
   name: string,
   email: string,
   password: string
 ) {
-  // Create user in Supabase Auth
-  const { data, error } = await supabase.auth.admin.createUser({
-    email,
-    password,
-    email_confirm: true,
-    user_metadata: {
-      name,
-    },
-  });
+  // Create the Auth user with the admin client.
+  const { data, error } =
+    await supabaseAdmin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: {
+        name,
+      },
+    });
 
   if (error) {
     throw error;
@@ -21,47 +25,48 @@ export async function registerUser(
 
   const user = data.user;
 
-  
-
-  // Create profile
-  const { error: profileError } = await supabase
-  .from("user_profiles")
-  .insert({
-    id: user.id,
-    name,
-    email,
-  });
+  // Create the matching application profile.
+  const { error: profileError } =
+    await supabaseAdmin
+      .from("user_profiles")
+      .insert({
+        id: user.id,
+        name,
+        email,
+      });
 
   if (profileError) {
     throw profileError;
   }
 
-  // Create default workspace
-  const { error: workspaceError } = await supabase
-    .from("workspaces")
-    .insert({
-      user_id: user.id,
-      name: "General",
-      is_system: true,
-    });
+  // Create the default workspace for the new user.
+  const { error: workspaceError } =
+    await supabaseAdmin
+      .from("workspaces")
+      .insert({
+        user_id: user.id,
+        name: "General",
+        is_system: true,
+      });
 
   if (workspaceError) {
     throw workspaceError;
   }
 
   return {
-  id: user.id,
-  name: user.user_metadata.name,
-  email: user.email,
-};
+    id: user.id,
+    name: user.user_metadata.name,
+    email: user.email,
+  };
 }
 
 export async function loginUser(
   email: string,
   password: string
 ) {
+  // Never sign in with supabaseAdmin.
   const { data, error } =
-    await supabase.auth.signInWithPassword({
+    await supabaseAuth.auth.signInWithPassword({
       email,
       password,
     });

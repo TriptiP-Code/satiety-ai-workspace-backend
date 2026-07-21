@@ -1,9 +1,9 @@
-import { supabase } from "../config/supabase";
+import { supabaseAdmin } from "../config/supabase";
 
 export async function getWorkspaceConversations(
   workspaceId: string
 ) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("conversations")
     .select("*")
     .eq("workspace_id", workspaceId)
@@ -20,7 +20,7 @@ export async function createConversation(
   workspaceId: string,
   title: string
 ) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("conversations")
     .insert({
       workspace_id: workspaceId,
@@ -38,7 +38,7 @@ export async function renameConversation(
   id: string,
   title: string
 ) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from("conversations")
     .update({
       title,
@@ -52,10 +52,8 @@ export async function renameConversation(
   return data;
 }
 
-export async function deleteConversation(
-  id: string
-) {
-  const { error } = await supabase
+export async function deleteConversation(id: string) {
+  const { error } = await supabaseAdmin
     .from("conversations")
     .delete()
     .eq("id", id);
