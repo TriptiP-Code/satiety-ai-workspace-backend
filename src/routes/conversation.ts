@@ -13,7 +13,7 @@ const router = Router();
 
 router.use(authenticate);
 
-router.get("/", getAllConversations);
+router.get("/:workspaceId", getAllConversations);
 
 router.post("/", createNewConversation);
 

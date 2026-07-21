@@ -6,32 +6,38 @@ import {
 } from "../repositories/conversationRepository";
 
 export async function getConversations(
-  workspaceId: string
+  workspaceId: string,
+  userId: string
 ) {
   return getWorkspaceConversations(
-    workspaceId
+    workspaceId,
+    userId
   );
 }
 
 export async function addConversation(
   workspaceId: string,
-  title: string
+  title: string,
+  userId: string
 ) {
   return createConversation(
     workspaceId,
-    title
+    title,
+    userId
   );
 }
 
 export async function updateConversation(
   id: string,
-  title: string
+  userId: string,
+  updates: {
+    title?: string;
+    workspaceId?: string;
+  }
 ) {
-  return renameConversation(id, title);
+  return renameConversation(id, userId, updates);
 }
 
-export async function removeConversation(
-  id: string
-) {
-  return deleteConversation(id);
+export async function removeConversation(id: string, userId: string) {
+  return deleteConversation(id, userId);
 }
