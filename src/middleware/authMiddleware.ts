@@ -7,6 +7,7 @@ export async function authenticate(
   next: NextFunction
 ) {
   try {
+    console.log("AUTH HEADER:", req.headers.authorization);
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -21,8 +22,13 @@ export async function authenticate(
       ""
     );
 
+    console.log("TOKEN:", token);
+
     const { data, error } =
       await supabase.auth.getUser(token);
+
+        console.log("SUPABASE USER:", data.user);
+        console.log("SUPABASE ERROR:", error);
 
     if (error || !data.user) {
       return res.status(401).json({
