@@ -29,13 +29,16 @@ export async function authenticate(
 
         console.log("SUPABASE USER:", data.user);
         console.log("SUPABASE ERROR:", error);
+        console.log("AUTH HEADER:", authHeader);
+        console.log("TOKEN:", token);
+        console.log("SUPABASE ERROR:", error);console.log("USER:", data.user);
 
     if (error || !data.user) {
-      return res.status(401).json({
-        success: false,
-        error: "Invalid token",
-      });
-    }
+  return res.status(401).json({
+    success: false,
+    error: error?.message,
+  });
+}
 
     (req as any).user = data.user;
 
