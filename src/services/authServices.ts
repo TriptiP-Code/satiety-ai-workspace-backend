@@ -21,6 +21,8 @@ export async function registerUser(
 
   const user = data.user;
 
+  
+
   // Create profile
   const { error: profileError } = await supabase
   .from("user_profiles")
@@ -47,7 +49,11 @@ export async function registerUser(
     throw workspaceError;
   }
 
-  return user;
+  return {
+  id: user.id,
+  name: user.user_metadata.name,
+  email: user.email,
+};
 }
 
 export async function loginUser(

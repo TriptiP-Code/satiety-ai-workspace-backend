@@ -49,11 +49,15 @@ export async function login(
     );
 
     return res.json({
-      success: true,
-      token: data.session.access_token,
-      refreshToken: data.session.refresh_token,
-      user: data.user,
-    });
+  success: true,
+  token: data.session.access_token,
+  refreshToken: data.session.refresh_token,
+  user: {
+    id: data.user.id,
+    name: data.user.user_metadata.name,
+    email: data.user.email,
+  },
+});
   } catch (error: any) {
     console.error(error);
 
