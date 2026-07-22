@@ -16,7 +16,7 @@ export async function register(
       });
     }
 
-    const user = await registerUser(
+    const data = await registerUser(
       name,
       email,
       password
@@ -24,7 +24,13 @@ export async function register(
 
     return res.status(201).json({
       success: true,
-      user,
+      token: data.session.access_token,
+      refreshToken: data.session.refresh_token,
+      user: {
+        id: data.user.id,
+        name: data.user.user_metadata.name,
+        email: data.user.email,
+      },
     });
   } catch (error: any) {
     console.error(error);
@@ -49,15 +55,15 @@ export async function login(
     );
 
     return res.json({
-  success: true,
-  token: data.session.access_token,
-  refreshToken: data.session.refresh_token,
-  user: {
-    id: data.user.id,
-    name: data.user.user_metadata.name,
-    email: data.user.email,
-  },
-});
+      success: true,
+      token: data.session.access_token,
+      refreshToken: data.session.refresh_token,
+      user: {
+        id: data.user.id,
+        name: data.user.user_metadata.name,
+        email: data.user.email,
+      },
+    });
   } catch (error: any) {
     console.error(error);
 

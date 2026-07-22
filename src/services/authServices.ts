@@ -53,11 +53,9 @@ export async function registerUser(
     throw workspaceError;
   }
 
-  return {
-    id: user.id,
-    name: user.user_metadata.name,
-    email: user.email,
-  };
+  // Return a real session so the new user is signed in immediately.
+  // This uses the separate auth client and never changes supabaseAdmin.
+  return loginUser(email, password);
 }
 
 export async function loginUser(
