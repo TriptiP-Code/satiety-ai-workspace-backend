@@ -35,3 +35,6 @@ export const supabaseAuth = createClient(
     },
   }
 );
+
+console.log(process.env.SUPABASE_URL);
+console.log(process.env.SUPABASE_SERVICE_ROLE_KEY?.substring(0,20));
